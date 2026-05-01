@@ -14,9 +14,10 @@
             min-height: 100vh;
         }
         
+        /* Исправленная сетка с minmax(0, 1fr) - это предотвращает вылезание ячеек за пределы экрана на десктопе */
         .grid-calendar { 
             display: grid; 
-            grid-template-columns: repeat(7, 1fr); 
+            grid-template-columns: repeat(7, minmax(0, 1fr)); 
             gap: 0.35rem; 
         }
         
@@ -24,25 +25,26 @@
             .grid-calendar { gap: 0.5rem; }
         }
 
-        /* Мягкие пастельные цвета без жестких рамок */
-        .score-5 { background-color: #ecfdf5; color: #065f46; } /* Отлично - Изумрудный */
-        .score-4 { background-color: #fefce8; color: #854d0e; } /* Хорошо - Желтый */
-        .score-3 { background-color: #f1f5f9; color: #334155; } /* Нейтрально - Серый */
-        .score-2 { background-color: #fff7ed; color: #9a3412; } /* Напряженно - Оранжевый */
-        .score-1 { background-color: #fff1f2; color: #9f1239; } /* Критично - Красный */
+        /* Мягкие пастельные цвета */
+        .score-5 { background-color: #ecfdf5; color: #065f46; border: 1px solid #d1fae5; }
+        .score-4 { background-color: #fefce8; color: #854d0e; border: 1px solid #fef08a; }
+        .score-3 { background-color: #f8fafc; color: #334155; border: 1px solid #f1f5f9; }
+        .score-2 { background-color: #fff7ed; color: #9a3412; border: 1px solid #ffedd5; }
+        .score-1 { background-color: #fff1f2; color: #9f1239; border: 1px solid #ffe4e6; }
 
         /* Ховер эффекты */
-        .score-5:hover { background-color: #d1fae5; transform: translateY(-1px); }
-        .score-4:hover { background-color: #fef08a; transform: translateY(-1px); }
-        .score-3:hover { background-color: #e2e8f0; transform: translateY(-1px); }
-        .score-2:hover { background-color: #ffedd5; transform: translateY(-1px); }
-        .score-1:hover { background-color: #ffe4e6; transform: translateY(-1px); }
+        .score-5:hover { background-color: #d1fae5; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1); }
+        .score-4:hover { background-color: #fef08a; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(234, 179, 8, 0.1); }
+        .score-3:hover { background-color: #f1f5f9; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(148, 163, 184, 0.1); }
+        .score-2:hover { background-color: #ffedd5; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.1); }
+        .score-1:hover { background-color: #ffe4e6; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(225, 29, 72, 0.1); }
 
-        /* Активный день: кольцо + тень вместо жесткого бордера */
+        /* Активный день */
         .active-day { 
-            box-shadow: 0 0 0 2px #fff, 0 0 0 4px #3b82f6, 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transform: scale(1.02);
+            box-shadow: 0 0 0 3px #fff, 0 0 0 5px #3b82f6 !important;
+            transform: scale(1.02) !important;
             z-index: 10;
+            border-color: transparent !important;
         }
 
         /* Элегантный скроллбар */
@@ -51,7 +53,7 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
         .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
         
-        /* Скрытие скроллбара на мобильных для чистоты */
+        /* Скрытие скроллбара на мобильных */
         @media (max-width: 1023px) {
             .custom-scrollbar::-webkit-scrollbar { display: none; }
             .custom-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -60,18 +62,19 @@
 </head>
 <body class="p-3 md:p-6 lg:p-8 flex items-center justify-center">
 
-    <div class="w-full max-w-6xl bg-white/80 backdrop-blur-2xl rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.05)] border border-white overflow-hidden flex flex-col lg:flex-row h-auto lg:h-[85vh]">
+    <!-- Изменен max-w-7xl для большей ширины на десктопе -->
+    <div class="w-full max-w-7xl bg-white/90 backdrop-blur-3xl rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.08)] border border-white overflow-hidden flex flex-col lg:flex-row h-auto lg:h-[85vh]">
         
-        <!-- Левая панель: Календарь -->
-        <div class="w-full lg:w-[55%] p-5 md:p-8 border-b lg:border-b-0 lg:border-r border-slate-100 overflow-y-auto custom-scrollbar flex flex-col">
+        <!-- Левая панель: Календарь (Увеличена до 60% ширины) -->
+        <div class="w-full lg:w-[60%] p-4 md:p-8 border-b lg:border-b-0 lg:border-r border-slate-100 overflow-y-auto custom-scrollbar flex flex-col">
             
-            <div class="mb-6 md:mb-8">
-                <h1 class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight">Май 2026</h1>
-                <p class="text-sm text-slate-500 mt-1.5 font-medium">Ваша карта: 丁丑 (Огонь Инь на Быке)</p>
+            <div class="mb-5 md:mb-8">
+                <h1 class="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">Май 2026</h1>
+                <p class="text-[13px] md:text-sm text-slate-500 mt-1 font-medium">Ваша карта: 丁丑 (Огонь Инь на Быке)</p>
             </div>
 
-            <!-- Минималистичная легенда -->
-            <div class="flex flex-wrap gap-x-4 gap-y-2 mb-6 text-[11px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <!-- Легенда -->
+            <div class="flex flex-wrap gap-x-4 gap-y-2 mb-6 text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                 <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm"></div> Отлично</div>
                 <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-yellow-400 shadow-sm"></div> Хорошо</div>
                 <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-slate-300 shadow-sm"></div> Нейтрально</div>
@@ -85,7 +88,7 @@
             </div>
 
             <!-- Сетка календаря -->
-            <div id="calendar-grid" class="grid-calendar text-sm flex-grow">
+            <div id="calendar-grid" class="grid-calendar text-sm flex-grow pb-4">
                 <!-- Генерируется через JS -->
             </div>
         </div>
@@ -93,8 +96,8 @@
         <!-- Якорь для мобильного скролла -->
         <div id="mobile-scroll-anchor"></div>
 
-        <!-- Правая панель: Детали дня -->
-        <div class="w-full lg:w-[45%] bg-slate-50/50 relative overflow-hidden flex flex-col">
+        <!-- Правая панель: Детали дня (Уменьшена до 40% ширины) -->
+        <div class="w-full lg:w-[40%] bg-slate-50/50 relative overflow-hidden flex flex-col">
             <div id="day-details" class="h-full overflow-y-auto custom-scrollbar p-6 md:p-8 lg:p-10">
                 <div class="text-slate-400 flex flex-col items-center justify-center h-full text-center space-y-4 opacity-60">
                     <svg class="w-16 h-16 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -110,7 +113,7 @@
     <script>
         const monthData = [
             { date: 1, stem: '乙', branch: '亥', score: 5, gods: 'Косая Печать / Правильная Власть', general: 'Свинья вступает в тайное слияние с Тигром из вашего Года рождения. Жесткая энергия Власти (правила, давление, ответственность) алхимически превращается в полезный Ресурс (Дерево).', recommend: 'Идеальный день для решения бюрократических вопросов, стратегического планирования и нестандартных интеллектуальных задач. Интуиция работает безупречно.', risks: 'Нет критических рисков. Любые ограничения обернутся вам на пользу.' },
-            { date: 2, stem: '丙', branch: '子', score: 4, gods: 'Грабитель Богатства / Седьмой Убийца', general: 'Крыса идеально сливается с вашим Быком (Дворец Брака). При этом Янский Огонь дает мощную энергетическую поддержку вашему слабому Иньскому Огню.', recommend: 'Опирайтесь на партнеров и команду. Отличный день для того, чтобы разделить ответственность и вместе сделать рывок в делах. Вечер проведите с семьей — слияние обещает гармонию.', risks: 'Скрытый "Вред" Крысы и Козы может дать легкое недопонимание с коллегами. Не обращайте внимания на мелкие сплетни.' },
+            { date: 2, stem: '丙', branch: '子', score: 4, gods: 'Грабитель Богатства / Седьмой Убийца', general: 'Крыса идеально сливается с вашим Быком (Дворец Брака). При этом Янский Огонь дает мощную энергетическую поддержку вашему слабому Иньскому Огню.', recommend: 'Опирайтесь на партнеров и команду. Отличный день для того, чтобы разделить ответственность и вместе сделать рывок в делах. Вечер проведите с семьей — слияние обещает гармонию.', risks: 'Скрытый "Вред" Крысы и Козы может дать легкое недопонимание с коллегами. Не обращайте внимания на мелкие сплетни.' },
             { date: 3, stem: '丁', branch: '丑', score: 3, gods: 'Братство / Дух Наслаждения', general: 'Дубликат вашего собственного Столпа Личности. Энергии дня полностью зеркалят вашу природу. Огромная концентрация Земли.', recommend: 'Погрузитесь в самостоятельную, скрупулезную работу. Хорошо доводить до ума старые проекты, шлифовать детали и наводить порядок в алгоритмах.', risks: 'Избыток Земли вызывает физическую усталость и "залипание" на перфекционизме. Не пытайтесь сделать всё идеально, иначе выгорите к вечеру.' },
             { date: 4, stem: '戊', branch: '寅', score: 3, gods: 'Вызов Власти / Прямая Печать', general: 'Контрастный день. Небесный ствол толкает на дерзкие, амбициозные действия, но земная ветвь (Тигр) призывает к логике и планированию. Дерево питает ваш Огонь.', recommend: 'Продвигайте свои смелые идеи, но только если под ними есть твердый расчет. День хорош для интеллектуальных споров, где вы можете доказать свою правоту через факты.', risks: 'Слишком резкие высказывания (Вызов Власти) могут задеть начальство или партнеров.' },
             { date: 5, stem: '己', branch: '卯', score: 2, gods: 'Дух Наслаждения / Косая Печать', general: 'Кролик вступает в прямое Столкновение с Петухом (вашим столпом Часа, отвечающим за проекты и результаты). При этом Земля Инь активирует тягу к творчеству.', recommend: 'Будьте готовы импровизировать. Если план ломается — отпускайте его и действуйте интуитивно (Косая Печать).', risks: 'Технические сбои, внезапные изменения в сроках сдачи проектов, недопонимание с исполнителями или подчиненными.' },
@@ -156,11 +159,15 @@
 
         monthData.forEach(data => {
             const cell = document.createElement('div');
-            cell.className = `rounded-2xl cursor-pointer transition-all duration-300 ease-out score-${data.score} flex flex-col items-center justify-center aspect-square md:min-h-[70px] relative`;
+            // Убрал aspect-square и добавил flex-колонку с нормальным распределением пространства
+            cell.className = `rounded-xl md:rounded-2xl cursor-pointer transition-all duration-300 ease-out score-${data.score} flex flex-col p-1.5 md:p-2 h-[60px] sm:h-[70px] md:h-[85px] lg:h-[95px]`;
             
+            // Дата теперь находится в нормальном потоке документа (self-start), а иероглифы занимают оставшееся место (flex-1)
             cell.innerHTML = `
-                <div class="text-[11px] md:text-sm font-bold opacity-60 absolute top-1.5 md:top-2 left-2 md:left-3">${data.date}</div>
-                <div class="text-[13px] md:text-lg font-black mt-3 md:mt-2 tracking-tight">${data.stem}${data.branch}</div>
+                <div class="text-[10px] md:text-[13px] font-bold opacity-60 self-start leading-none mb-0.5">${data.date}</div>
+                <div class="flex-1 flex items-center justify-center w-full">
+                    <span class="text-[14px] sm:text-base md:text-lg lg:text-xl font-black tracking-tight leading-none">${data.stem}${data.branch}</span>
+                </div>
             `;
 
             cell.addEventListener('click', () => {
@@ -171,7 +178,6 @@
                 selectedElement = cell;
                 showDetails(data);
                 
-                // Плавный скролл на мобильных устройствах
                 if (window.innerWidth < 1024) {
                     setTimeout(() => {
                         document.getElementById('mobile-scroll-anchor').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -191,44 +197,44 @@
                 case 5: 
                     badgeClass = 'bg-emerald-100 text-emerald-700'; 
                     statusText = 'Отличный день'; 
-                    iconSvg = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                    iconSvg = '<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
                     break;
                 case 4: 
                     badgeClass = 'bg-yellow-100 text-yellow-700'; 
                     statusText = 'Благоприятно'; 
-                    iconSvg = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>';
+                    iconSvg = '<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>';
                     break;
                 case 3: 
                     badgeClass = 'bg-slate-200 text-slate-700'; 
                     statusText = 'Нейтральный день'; 
-                    iconSvg = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>';
+                    iconSvg = '<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>';
                     break;
                 case 2: 
                     badgeClass = 'bg-orange-100 text-orange-700'; 
                     statusText = 'Напряженный день'; 
-                    iconSvg = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+                    iconSvg = '<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
                     break;
                 case 1: 
                     badgeClass = 'bg-rose-100 text-rose-700'; 
                     statusText = 'Критический день'; 
-                    iconSvg = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                    iconSvg = '<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
                     break;
             }
 
             detailsPanel.innerHTML = `
-                <div class="flex items-center justify-between mb-8 pb-5 border-b border-slate-200/60">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-5 border-b border-slate-200/60 gap-4">
                     <div class="flex items-baseline gap-2 md:gap-3">
                         <span class="text-4xl md:text-5xl font-black text-slate-800 tracking-tighter">${data.date}</span>
                         <span class="text-lg md:text-xl font-medium text-slate-500">мая</span>
                     </div>
-                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] md:text-xs font-bold uppercase tracking-wider ${badgeClass}">
+                    <div class="flex items-center self-start sm:self-auto gap-1.5 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[11px] md:text-xs font-bold uppercase tracking-wider ${badgeClass}">
                         ${iconSvg}
                         ${statusText}
                     </div>
                 </div>
                 
                 <div class="space-y-6 pb-8">
-                    <div class="flex items-center gap-6 mb-2">
+                    <div class="flex items-center gap-6 mb-4">
                         <div>
                             <h3 class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Столп Дня</h3>
                             <p class="text-3xl font-black text-slate-800 tracking-tight">${data.stem}${data.branch}</p>
